@@ -7,15 +7,13 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Questao02 {
-
     private static final int AVAILABLE_DAYS = 7;
-
     private final List<Place> places = List.of(
-            new Place("Paris", 10, 3),
-            new Place("Roma", 8, 2),
-            new Place("Londres", 7, 2),
-            new Place("Berlim", 6, 1),
-            new Place("Amsterdã", 5, 1)
+        new Place("Paris", 10, 3),
+        new Place("Roma", 8, 2),
+        new Place("Londres", 7, 2),
+        new Place("Berlim", 6, 1),
+        new Place("Amsterdã", 5, 1)
     );
 
     public static void main(String[] args) {
@@ -96,16 +94,15 @@ public class Questao02 {
         int totalValue = calculateTotalValue(result);
         int totalDays = calculateTotalDays(result);
 
-        System.out.println();
-        System.out.println(title + ":");
+        System.out.println("\n" + title + ":");
 
         System.out.println("Locais selecionados: " +
-                result.stream()
-                        .map(place -> place.getName()
-                                + "(" + place.getValue()
-                                + " pontos, " + place.getDurationDays()
-                                + " dias)")
-                        .toList()
+            result.stream()
+                .map(place -> place.getName()
+                    + "(" + place.getValue()
+                    + " pontos, " + place.getDurationDays()
+                    + " dias)")
+                .toList()
         );
 
         System.out.println("Total de dias utilizados: " + totalDays);
@@ -115,13 +112,13 @@ public class Questao02 {
 
     private int calculateTotalValue(List<Place> places) {
         return places.stream()
-                .mapToInt(Place::getValue)
-                .sum();
+            .mapToInt(Place::getValue)
+            .sum();
     }
 
     private int calculateTotalDays(List<Place> places) {
         return places.stream()
-                .mapToInt(Place::getDurationDays)
-                .sum();
+            .mapToInt(Place::getDurationDays)
+            .sum();
     }
 }
