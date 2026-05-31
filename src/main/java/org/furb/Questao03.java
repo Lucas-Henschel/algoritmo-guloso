@@ -1,12 +1,13 @@
 package org.furb;
 
+import org.furb.helpers.questao03.RadioStation;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class Questao03 {
-
     private final Set<String> targetStates = Set.of("MT", "RJ", "ES", "SP", "SC", "RS", "PR", "MS");
 
     private final List<RadioStation> stations = List.of(
@@ -28,9 +29,7 @@ public class Questao03 {
     private void init() {
         List<RadioStation> greedySolution = resolveGreedy(stations, targetStates);
 
-        printResult("Solução gulosa", greedySolution);
-
-        System.out.println("\nO algoritmo guloso escolhe, a cada etapa, a estação que cobre o maior número de estados ainda não cobertos.");
+        printResult(greedySolution);
     }
 
     private List<RadioStation> resolveGreedy(List<RadioStation> stations, Set<String> targetStates) {
@@ -62,10 +61,8 @@ public class Questao03 {
         return List.copyOf(selectedStations);
     }
 
-    private void printResult(String title, List<RadioStation> result) {
-        Set<String> coveredStates = new HashSet<>();
-
-        System.out.println("\n" + title + ":");
+    private void printResult(List<RadioStation> result) {
+        System.out.println("\nSolução gulosa" + ":");
 
         System.out.println("Estações selecionadas: " +
             result.stream()
@@ -73,18 +70,6 @@ public class Questao03 {
                 .toList()
         );
 
-        for (RadioStation station : result) {
-            coveredStates.addAll(station.coverage());
-
-            System.out.println(station.name() + " - Cobertura: " + station.coverage());
-        }
-
-        coveredStates.retainAll(targetStates);
-
-        System.out.println("Estados cobertos: " + coveredStates);
         System.out.println("Quantidade de estações contratadas: " + result.size());
-    }
-
-    private record RadioStation(String name, Set<String> coverage) {
     }
 }

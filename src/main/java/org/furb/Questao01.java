@@ -9,6 +9,7 @@ import org.furb.helpers.questao01.Solution;
 
 public class Questao01 {
     private static final int TRUCK_CAPACITY = 100;
+
     private final List<CargoItem> items = List.of(
         new CargoItem(1, 40),
         new CargoItem(2, 30),
@@ -26,17 +27,17 @@ public class Questao01 {
     }
 
     private void init() {
-        Solution greedySolution = resolveGreedy(items, TRUCK_CAPACITY);
-        Solution optimalSolution = resolveExact(items, TRUCK_CAPACITY);
+        Solution greedySolution = resolveGreedy(items);
+        Solution optimalSolution = resolveExact(items);
 
-        printResult("Solução gulosa", greedySolution, TRUCK_CAPACITY);
-        printResult("Solução ótima", optimalSolution, TRUCK_CAPACITY);
+        printResult("Solução gulosa", greedySolution);
+        printResult("Solução ótima", optimalSolution);
 
         boolean greedyIsOptimal = greedySolution.totalVolume() == optimalSolution.totalVolume();
         System.out.println("\nO algoritmo guloso retorna a solução ótima? " + (greedyIsOptimal ? "Sim" : "Não"));
     }
 
-    private Solution resolveGreedy(List<CargoItem> items, int capacity) {
+    private Solution resolveGreedy(List<CargoItem> items) {
         List<CargoItem> sortedItems = new ArrayList<>(items);
         sortedItems.sort(Comparator.comparingInt(CargoItem::volume).reversed());
 
@@ -44,7 +45,7 @@ public class Questao01 {
         int currentVolume = 0;
 
         for (CargoItem item : sortedItems) {
-            if (currentVolume + item.volume() <= capacity) {
+            if (currentVolume + item.volume() <= TRUCK_CAPACITY) {
                 selectedItems.add(item);
                 currentVolume += item.volume();
             }
@@ -53,7 +54,7 @@ public class Questao01 {
         return new Solution(List.copyOf(selectedItems), currentVolume);
     }
 
-    private Solution resolveExact(List<CargoItem> items, int capacity) {
+    private Solution resolveExact(List<CargoItem> items) {
         Solution bestResult = new Solution(List.of(), 0);
         int totalCombinations = 1 << items.size();
 
@@ -68,7 +69,7 @@ public class Questao01 {
                     CargoItem item = items.get(index);
                     currentVolume += item.volume();
 
-                    if (currentVolume > capacity) {
+                    if (currentVolume > TRUCK_CAPACITY) {
                         break;
                     }
 
@@ -76,7 +77,7 @@ public class Questao01 {
                 }
             }
 
-            if (currentVolume <= capacity && currentVolume > bestResult.totalVolume()) {
+            if (currentVolume <= TRUCK_CAPACITY && currentVolume > bestResult.totalVolume()) {
                 bestResult = new Solution(List.copyOf(selectedItems), currentVolume);
             }
         }
@@ -84,7 +85,7 @@ public class Questao01 {
         return bestResult;
     }
 
-    private void printResult(String title, Solution result, int capacity) {
+    private void printResult(String title, Solution result) {
         System.out.println("\n" + title + ":");
 
         System.out.println("Itens selecionados: " +
@@ -94,6 +95,6 @@ public class Questao01 {
         );
 
         System.out.println("Volume total: " + result.totalVolume() + "L");
-        System.out.println("Capacidade restante: " + (capacity - result.totalVolume()) + "L");
+        System.out.println("Capacidade restante: " + (TRUCK_CAPACITY - result.totalVolume()) + "L");
     }
 }

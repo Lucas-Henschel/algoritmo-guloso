@@ -8,6 +8,7 @@ import java.util.List;
 
 public class Questao02 {
     private static final int AVAILABLE_DAYS = 7;
+
     private final List<Place> places = List.of(
         new Place("Paris", 10, 3),
         new Place("Roma", 8, 2),
@@ -25,19 +26,18 @@ public class Questao02 {
     }
 
     private void init() {
-        List<Place> greedySolution = resolveGreedy(places, AVAILABLE_DAYS);
-        List<Place> optimalSolution = resolveExact(places, AVAILABLE_DAYS);
+        List<Place> greedySolution = resolveGreedy(places);
+        List<Place> optimalSolution = resolveExact(places);
 
-        printResult("Solução gulosa", greedySolution, AVAILABLE_DAYS);
-        printResult("Solução ótima", optimalSolution, AVAILABLE_DAYS);
+        printResult("Solução gulosa", greedySolution);
+        printResult("Solução ótima", optimalSolution);
 
         boolean greedyIsOptimal = calculateTotalValue(greedySolution) == calculateTotalValue(optimalSolution);
 
-        System.out.println("O algoritmo guloso retorna a solução ótima? " + (greedyIsOptimal ? "Sim" : "Não"));
-        System.out.println("O algoritmo guloso busca o ótimo local, mas não garante o ótimo global.");
+        System.out.println("\nO algoritmo guloso retorna a solução ótima? " + (greedyIsOptimal ? "Sim" : "Não"));
     }
 
-    private List<Place> resolveGreedy(List<Place> places, int availableDays) {
+    private List<Place> resolveGreedy(List<Place> places) {
         List<Place> sortedPlaces = new ArrayList<>(places);
 
         sortedPlaces.sort(Comparator.comparingDouble(Place::getValuePerDay).reversed());
@@ -46,7 +46,7 @@ public class Questao02 {
         int usedDays = 0;
 
         for (Place place : sortedPlaces) {
-            if (usedDays + place.getDurationDays() <= availableDays) {
+            if (usedDays + place.getDurationDays() <= AVAILABLE_DAYS) {
                 selectedPlaces.add(place);
                 usedDays += place.getDurationDays();
             }
@@ -55,7 +55,7 @@ public class Questao02 {
         return List.copyOf(selectedPlaces);
     }
 
-    private List<Place> resolveExact(List<Place> places, int availableDays) {
+    private List<Place> resolveExact(List<Place> places) {
         List<Place> bestResult = List.of();
         int bestValue = 0;
         int totalCombinations = 1 << places.size();
@@ -72,7 +72,7 @@ public class Questao02 {
                     Place place = places.get(index);
                     currentDays += place.getDurationDays();
 
-                    if (currentDays > availableDays) {
+                    if (currentDays > AVAILABLE_DAYS) {
                         break;
                     }
 
@@ -81,7 +81,7 @@ public class Questao02 {
                 }
             }
 
-            if (currentDays <= availableDays && currentValue > bestValue) {
+            if (currentDays <= AVAILABLE_DAYS && currentValue > bestValue) {
                 bestValue = currentValue;
                 bestResult = List.copyOf(selectedPlaces);
             }
@@ -90,7 +90,7 @@ public class Questao02 {
         return bestResult;
     }
 
-    private void printResult(String title, List<Place> result, int availableDays) {
+    private void printResult(String title, List<Place> result) {
         int totalValue = calculateTotalValue(result);
         int totalDays = calculateTotalDays(result);
 
@@ -106,7 +106,7 @@ public class Questao02 {
         );
 
         System.out.println("Total de dias utilizados: " + totalDays);
-        System.out.println("Dias restantes: " + (availableDays - totalDays));
+        System.out.println("Dias restantes: " + (AVAILABLE_DAYS - totalDays));
         System.out.println("Pontuação total obtida: " + totalValue);
     }
 
