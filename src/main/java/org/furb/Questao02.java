@@ -10,9 +10,9 @@ public class Questao02 {
     private static final int AVAILABLE_DAYS = 7;
 
     private final List<Place> places = List.of(
-        new Place("Paris", 10, 3),
-        new Place("Roma", 8, 2),
-        new Place("Londres", 7, 2),
+        new Place("Berna", 10, 3),
+        new Place("Mônaco", 8, 2),
+        new Place("Luxemburgo", 7, 2),
         new Place("Berlim", 6, 1),
         new Place("Amsterdã", 5, 1)
     );
@@ -33,7 +33,6 @@ public class Questao02 {
         printResult("Solução ótima", optimalSolution);
 
         boolean greedyIsOptimal = calculateTotalValue(greedySolution) == calculateTotalValue(optimalSolution);
-
         System.out.println("\nO algoritmo guloso retorna a solução ótima? " + (greedyIsOptimal ? "Sim" : "Não"));
     }
 
